@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MDNSRepeater": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "mDNSRepeater_UCSDestAddresses": "10.2.1.4"
+      }
+    }
+  }
+}
