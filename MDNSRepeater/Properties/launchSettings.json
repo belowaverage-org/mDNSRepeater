@@ -3,8 +3,9 @@
     "MDNSRepeater": {
       "commandName": "Project",
       "environmentVariables": {
-        "mDNSRepeater_UCSDestAddresses": "10.2.1.4"
-      }
+        "mDNSRepeater_UCSDestAddresses": "10.3.1.30"
+      },
+      "remoteDebugEnabled": false
     }
   }
 }

@@ -18,7 +18,7 @@ namespace MDNSRepeater
             Shared.Log("UCS destination port: " + DestPort + ".");
             Recipients = new IPEndPoint[sRecipients.Length];
             for (int i = 0; i < sRecipients.Length; i++) Recipients[i] = new IPEndPoint(IPAddress.Parse(sRecipients[i]), DestPort);
-            LocalEndpoint = new(IPAddress.Any, DestPort);
+            LocalEndpoint = new(IPAddress.Any, 0);
             Client = new UdpClient();
             Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             Client.Client.Bind(LocalEndpoint);
