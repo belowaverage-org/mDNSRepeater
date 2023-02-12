@@ -7,13 +7,13 @@ namespace MDNSRepeater
     internal class MulticastReceiver : IDisposable
     {
         bool Disposing = false;
-        UdpClient Client;
-        IPEndPoint Endpoint = new IPEndPoint(IPAddress.Any, 5353);
-        IPAddress[] SelfAddresses;
+        readonly UdpClient Client;
+        IPEndPoint Endpoint = new(IPAddress.Any, 5353);
+        readonly IPAddress[] SelfAddresses;
         internal MulticastReceiver()
         {
             Shared.Log("Setting up MCR...");
-            ListAdapterIPs();
+            SelfAddresses = ListAdapterIPs();
             Client = new UdpClient();
             Client.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
             Client.Client.Bind(Endpoint);
@@ -33,10 +33,10 @@ namespace MDNSRepeater
                 }
             }
         }
-        void ListAdapterIPs()
+        static IPAddress[] ListAdapterIPs()
         {
             Shared.Log("Enumerating assigned IPs...");
-            List<IPAddress> ips = new List<IPAddress>();
+            List<IPAddress> ips = new();
             NetworkInterface[] interfaces = NetworkInterface.GetAllNetworkInterfaces();
             foreach (NetworkInterface inter in interfaces)
             {
@@ -46,7 +46,7 @@ namespace MDNSRepeater
                     ips.Add(ip.Address);
                 }
             }
-            SelfAddresses = ips.ToArray();
+            return ips.ToArray();
         }
         public void Dispose()
         {

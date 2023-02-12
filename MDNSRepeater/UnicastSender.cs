@@ -5,14 +5,14 @@ namespace MDNSRepeater
 {
     internal class UnicastSender
     {
-        IPEndPoint[] Recipients;
-        int DestPort = 5354;
-        UdpClient Client;
-        IPEndPoint LocalEndpoint;
+        readonly IPEndPoint[] Recipients;
+        readonly int DestPort = 5354;
+        readonly UdpClient Client;
+        readonly IPEndPoint LocalEndpoint;
         internal UnicastSender()
         {
             Shared.Log("Setting up UCS...");
-            string[] sRecipients = Environment.GetEnvironmentVariable("mDNSRepeater_UCSDestAddresses")?.Split(',') ?? new string[0];
+            string[] sRecipients = Environment.GetEnvironmentVariable("mDNSRepeater_UCSDestAddresses")?.Split(',') ?? Array.Empty<string>();
             Shared.Log("UCS destination addresses: " + string.Join(", ", sRecipients) + ".");
             DestPort = int.Parse(Environment.GetEnvironmentVariable("mDNSRepeater_UCSDestPort") ?? DestPort.ToString());
             Shared.Log("UCS destination port: " + DestPort + ".");

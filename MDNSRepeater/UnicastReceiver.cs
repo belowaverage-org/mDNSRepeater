@@ -6,9 +6,9 @@ namespace MDNSRepeater
     internal class UnicastReceiver : IDisposable
     {
         bool Disposing = false;
-        UdpClient Client;
+        readonly UdpClient Client;
         IPEndPoint Endpoint;
-        int ListenPort = 5354;
+        readonly int ListenPort = 5354;
         internal UnicastReceiver()
         {
             Shared.Log("Setting up UCR...");

@@ -5,9 +5,9 @@ namespace MDNSRepeater
 {
     internal class MulticastSender
     {
-        UdpClient Client;
-        IPEndPoint LocalEndpoint = new(IPAddress.Any, 5353);
-        IPEndPoint RemoteEndpoint = new(IPAddress.Parse("224.0.0.251"), 5353);
+        readonly UdpClient Client;
+        readonly IPEndPoint LocalEndpoint = new(IPAddress.Any, 5353);
+        readonly IPEndPoint RemoteEndpoint = new(IPAddress.Parse("224.0.0.251"), 5353);
         internal MulticastSender()
         {
             Shared.Log("Setting up MCS...");
