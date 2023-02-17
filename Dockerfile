@@ -9,7 +9,7 @@ RUN dotnet restore
 RUN dotnet publish -p:PublishProfile=LinuxARM64 -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/runtime:6.0-alpine
+FROM alpine
 WORKDIR /App
 COPY --from=build-env /App/out .
 ENTRYPOINT ["dotnet", "MDNSRepeater"]
