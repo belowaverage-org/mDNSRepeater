@@ -7,7 +7,7 @@ COPY . .
 RUN dotnet publish -c Release -o /app -r linux-arm64 --self-contained true /p:PublishTrimmed=true /p:PublishReadyToRun=true /p:PublishSingleFile=true
 
 # final stage/image
-FROM mcr.microsoft.com/dotnet/runtime-deps:7.0
+FROM mcr.microsoft.com/dotnet/nightly/runtime-deps:7.0-alpine
 WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["./MDNSRepeater"]
