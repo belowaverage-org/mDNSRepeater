@@ -8,7 +8,8 @@ RUN dotnet publish -c Release -o /app -r linux-arm64 --self-contained true /p:Pu
 
 # final stage/image
 FROM alpine
-RUN apk add gcompat libgcc libstdc++ icu
+RUN apk add --no-cache gcompat libgcc libstdc++
 WORKDIR /app
 COPY --from=build /app .
+ENV DOTNET_RUNNING_IN_CONTAINER=true DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true
 ENTRYPOINT ["./MDNSRepeater"]
