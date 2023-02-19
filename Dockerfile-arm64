@@ -4,11 +4,12 @@ WORKDIR /source
 
 # copy and publish app and libraries
 COPY . .
-RUN dotnet publish -c Release -o /app -r linux-arm64 --self-contained false
+RUN dotnet publish -c Release -o /app -r linux-arm64 --self-contained true -p:PublishTrimmed=true -p:PublishReadyToRun=false -p:PublishSingleFile=true
 RUN rm /app/MDNSRepeater.pdb
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/runtime:7.0-alpine
+RUN apk add --no-cache gcompat
 WORKDIR /app
 COPY --from=build /app .
 ENV mDNSRepeater_UCRListenPort=5354 mDNSRepeater_UCSDestPort=5354 mDNSRepeater_UCSDestAddresses=1.1.1.1
