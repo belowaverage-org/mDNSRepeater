@@ -4,7 +4,7 @@ WORKDIR /source
 
 # copy and publish app and libraries
 COPY . .
-RUN dotnet publish -c Release -o /app -r linux-arm64 --self-contained true -p:PublishTrimmed=true -p:PublishReadyToRun=true -p:PublishSingleFile=false
+RUN dotnet publish -c Release -o /app -r linux-arm64 --self-contained true -p:PublishTrimmed=true -p:PublishReadyToRun=false -p:PublishSingleFile=false
 RUN rm /app/MDNSRepeater.pdb
 
 # final stage/image
