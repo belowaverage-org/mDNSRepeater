@@ -8,9 +8,22 @@ RUN dotnet publish -c Release -o /app -r linux-x64 --self-contained true /p:Publ
 RUN rm /app/MDNSRepeater.pdb
 
 # final stage/image
-FROM alpine
-RUN apk add --no-cache gcompat libgcc libstdc++
+FROM mcr.microsoft.com/cbl-mariner/base/core:2.0
+
+RUN tdnf install -y \
+        ca-certificates-microsoft \
+        \
+        # .NET dependencies
+        glibc \
+        icu \
+        krb5 \
+        libgcc \
+        libstdc++ \
+        openssl-libs \
+        zlib \
+    && tdnf clean all
+
 WORKDIR /app
 COPY --from=build /app .
-ENV DOTNET_RUNNING_IN_CONTAINER=true DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=true mDNSRepeater_UCRListenPort=5354 mDNSRepeater_UCSDestPort=5354 mDNSRepeater_UCSDestAddresses=1.1.1.1
+ENV DOTNET_RUNNING_IN_CONTAINER=true mDNSRepeater_UCRListenPort=5354 mDNSRepeater_UCSDestPort=5354 mDNSRepeater_UCSDestAddresses=1.1.1.1
 ENTRYPOINT ["./MDNSRepeater"]
