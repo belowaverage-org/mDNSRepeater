@@ -1,5 +1,5 @@
 # https://hub.docker.com/_/microsoft-dotnet
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 WORKDIR /source
 
 # copy and publish app and libraries
@@ -8,22 +8,8 @@ RUN dotnet publish -c Release -o /app -r linux-arm64 --self-contained true /p:Pu
 RUN rm /app/MDNSRepeater.pdb
 
 # final stage/image
-FROM mcr.microsoft.com/cbl-mariner/base/core:2.0
-
-RUN tdnf install -y \
-        ca-certificates-microsoft \
-        \
-        # .NET dependencies
-        glibc \
-        icu \
-        krb5 \
-        libgcc \
-        libstdc++ \
-        openssl-libs \
-        zlib \
-    && tdnf clean all
-
+FROM mcr.microsoft.com/dotnet/runtime-deps:7.0
 WORKDIR /app
 COPY --from=build /app .
-ENV DOTNET_RUNNING_IN_CONTAINER=true mDNSRepeater_UCRListenPort=5354 mDNSRepeater_UCSDestPort=5354 mDNSRepeater_UCSDestAddresses=1.1.1.1
+ENV mDNSRepeater_UCRListenPort=5354 mDNSRepeater_UCSDestPort=5354 mDNSRepeater_UCSDestAddresses=1.1.1.1
 ENTRYPOINT ["./MDNSRepeater"]
