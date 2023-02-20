@@ -70,7 +70,7 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ghcr.io/krisdb2009/mdnsrepeater
+          tags: ghcr.io/belowaverage-org/mdnsrepeater
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64, linux/arm64
